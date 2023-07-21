@@ -71,7 +71,13 @@ class Controller:
             self.model.delete(int(ident))
 
     def edit(self) -> None:
-        raise NotImplementedError
+        # TODO: maybe convert options to correct type must be done on __parse_options side
+        ident = self.parsed_options['--id']
+        if ident.isdigit():
+            self.model.update(int(ident),
+                              title=self.parsed_options['--title'] if '--title' in self.parsed_options else None,
+                              msg=self.parsed_options['--msg'] if '--msg' in self.parsed_options else None
+                              )
 
     @staticmethod
     def __fancy_record_print(ident: int | str, record: dict) -> None:
