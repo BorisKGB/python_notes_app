@@ -1,3 +1,4 @@
+import datetime
 from model import JsonModel
 
 
@@ -24,17 +25,16 @@ class Action:
 
 
 class Controller:
-    @staticmethod
-    def __create_options() -> dict:
+    def __create_options(self) -> dict:
         options = {
             "title": Option("--title", "Заголовок заметки"),
             "msg": Option("--msg", "Сообщение заметки"),
             "id": Option("--id", "Идентификатор записи"),
             "sort": Option("--sort", "Включить сортировку записей по дате создания по возрастанию", "flag"),
             "filter-before": Option("--filter-before", """Показывать только заметки созданные до даты,
-            формат записи '%H:%M:%S_%d-%m-%Y' или '%d-%m-%Y'"""),
+            формат записи %s""" % self.date_filter_formats),
             "filter-after": Option("--filter-after", """Показывать только заметки созданные после даты,
-            формат записи '%H:%M:%S_%d-%m-%Y' или '%d-%m-%Y'""")
+            формат записи %s""" % self.date_filter_formats)
         }
         return options
 
@@ -55,6 +55,7 @@ class Controller:
 
     def __init__(self, args: list) -> None:
         self.prog_name = args[0]
+        self.date_filter_formats = ['%H:%M:%S_%d-%m-%Y', '%d-%m-%Y']
         self.options = self.__create_options()
         self.actions = self.__create_actions()
         self.action = None
@@ -107,14 +108,39 @@ class Controller:
         else:
             print("No Data")
 
+    @staticmethod
+    def __parse_date(dt_str: str, dt_formats: list) -> datetime.datetime | None:
+        for dt_format in dt_formats:
+            try:
+                return datetime.datetime.strptime(dt_str, dt_format)
+            except ValueError:
+                pass
+        return None
+
     def list(self) -> None:
         records = self.model.get_all()
         sort = self.parsed_options['--sort'] if '--sort' in self.parsed_options else False
+        before_limit = None
+        if '--filter-before' in self.parsed_options:
+            before_limit = self.__parse_date(self.parsed_options['--filter-before'], self.date_filter_formats)
+            if before_limit is None:
+                print("WARN: формат даты для '--filter-before' не распознан, параметр игнорируется")
+        after_limit = None
+        if '--filter-after' in self.parsed_options:
+            after_limit = self.__parse_date(self.parsed_options['--filter-after'], self.date_filter_formats)
+            if after_limit is None:
+                print("WARN: формат даты для '--filter-after' не распознан, параметр игнорируется")
         if len(records) > 0:
             if sort:
                 records = {k: v for k, v in sorted(records.items(), key=lambda item: item[1]['creation_time'])}
             for ident, record in records.items():
-                self.__fancy_record_print(ident, record)
+                show_record = True
+                if show_record and before_limit is not None and record['creation_time'] >= before_limit:
+                    show_record = False
+                if show_record and after_limit is not None and record['creation_time'] <= after_limit:
+                    show_record = False
+                if show_record:
+                    self.__fancy_record_print(ident, record)
         else:
             print("No Data")
 
