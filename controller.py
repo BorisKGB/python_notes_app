@@ -109,7 +109,10 @@ class Controller:
 
     def list(self) -> None:
         records = self.model.get_all()
+        sort = self.parsed_options['--sort'] if '--sort' in self.parsed_options else False
         if len(records) > 0:
+            if sort:
+                records = {k: v for k, v in sorted(records.items(), key=lambda item: item[1]['creation_time'])}
             for ident, record in records.items():
                 self.__fancy_record_print(ident, record)
         else:
