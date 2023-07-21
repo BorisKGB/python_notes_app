@@ -1,4 +1,4 @@
-import model
+from model import JsonModel
 
 
 class Option:
@@ -48,6 +48,7 @@ class Controller:
         self.parse_arguments(args[1:])
         self.prog_info = "Приложение заметки (python) Консольная версия"
         self.prog_usage = "usage: %s ACTION [OPTIONS]" % self.prog_name
+        self.model = JsonModel
 
     def show_help(self, options: dict = None) -> None:
         print(self.prog_info)
