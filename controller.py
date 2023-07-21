@@ -58,7 +58,7 @@ class Controller:
         self.model = JsonModel()
 
     def add(self, options: dict = None) -> None:
-        raise NotImplementedError
+        self.model.add(title=self.parsed_options['--title'], msg=self.parsed_options['--msg'])
 
     def get(self, options: dict = None) -> None:
         raise NotImplementedError
