@@ -60,8 +60,27 @@ class Controller:
     def add(self, options: dict = None) -> None:
         self.model.add(title=self.parsed_options['--title'], msg=self.parsed_options['--msg'])
 
+    @staticmethod
+    def __fancy_record_print(ident: int | str, record: dict) -> None:
+        print("-" * 6)
+        print("id: %s" % ident)
+        # TODO: datetime.strftime(more_human_readable_format)?
+        print("created: %s" % record['creation_time'].isoformat())
+        print("changed: %s" % record['modification_time'].isoformat())
+        print("header: %s" % record['title'])
+        print("body: %s" % record['msg'])
+        print("-" * 6)
+
     def get(self, options: dict = None) -> None:
-        raise NotImplementedError
+        # TODO: maybe convert options to correct type must be done on __parse_options side
+        record = None
+        ident = self.parsed_options['--id']
+        if ident.isdigit():
+            record = self.model.get(int(ident))
+        if record:
+            self.__fancy_record_print(ident, record)
+        else:
+            print("No Data")
 
     def list(self, options: dict = None) -> None:
         raise NotImplementedError
