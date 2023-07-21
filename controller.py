@@ -29,7 +29,12 @@ class Controller:
         options = {
             "title": Option("--title", "Заголовок заметки"),
             "msg": Option("--msg", "Сообщение заметки"),
-            "id": Option("--id", "Идентификатор записи")
+            "id": Option("--id", "Идентификатор записи"),
+            "sort": Option("--sort", "Включить сортировку записей по дате создания по возрастанию", "flag"),
+            "filter-before": Option("--filter-before", """Показывать только заметки созданные до даты,
+            формат записи '%H:%M:%S_%d-%m-%Y' или '%d-%m-%Y'"""),
+            "filter-after": Option("--filter-after", """Показывать только заметки созданные после даты,
+            формат записи '%H:%M:%S_%d-%m-%Y' или '%d-%m-%Y'""")
         }
         return options
 
@@ -41,7 +46,8 @@ class Controller:
             "get": Action("get", "Получение записи", [self.options['id']], self.get),
             "edit": Action("edit", "Изменение записи", [self.options['id']], self.edit,
                            [self.options['title'], self.options['msg']]),
-            "list": Action("list", "Получение списка записей", [], self.list),
+            "list": Action("list", "Получение списка записей", [], self.list,
+                           [self.options['sort'], self.options['filter-before'], self.options['filter-after']]),
             "help": Action("help", "Отображение текущей страницы помощи, также может быть вызвано опциями '-h/--help'",
                            [], self.show_help)
         }
