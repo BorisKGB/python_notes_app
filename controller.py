@@ -64,7 +64,11 @@ class Controller:
         self.model.add(title=self.parsed_options['--title'], msg=self.parsed_options['--msg'])
 
     def delete(self) -> None:
-        raise NotImplementedError
+        # TODO: maybe convert options to correct type must be done on __parse_options side
+        # TODO: check if record with requested ID exist and print some warn message otherwise?
+        ident = self.parsed_options['--id']
+        if ident.isdigit():
+            self.model.delete(int(ident))
 
     def edit(self) -> None:
         raise NotImplementedError
