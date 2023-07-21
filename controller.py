@@ -38,6 +38,7 @@ class Controller:
         actions = {
             "add": Action("add", "Добавление записи", [self.options['title'], self.options['msg']], self.add),
             "get": Action("get", "Получение записи", [self.options['id']], self.get),
+            "list": Action("list", "Получение списка записей", [], self.list),
             "help": Action("help", "Отображение текущей страницы помощи, также может быть вызвано опциями '-h/--help'",
                            [], self.show_help)
         }
@@ -60,6 +61,9 @@ class Controller:
         raise NotImplementedError
 
     def get(self, options: dict = None) -> None:
+        raise NotImplementedError
+
+    def list(self, options: dict = None) -> None:
         raise NotImplementedError
 
     def show_help(self, options: dict = None) -> None:
