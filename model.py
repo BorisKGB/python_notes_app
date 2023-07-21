@@ -28,7 +28,7 @@ def datetime_parser(dct: dict) -> dict:
     return parsed_dct
 
 
-class jsonModel:
+class JsonModel:
     def __init__(self, path: str = "notes.json"):
         self.path = path
         self.data = self.__load()
