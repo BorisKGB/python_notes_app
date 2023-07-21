@@ -28,7 +28,8 @@ class Controller:
     def __create_options() -> dict:
         options = {
             "title": Option("--title", "Заголовок заметки"),
-            "msg": Option("--msg", "Сообщение заметки")
+            "msg": Option("--msg", "Сообщение заметки"),
+            "id": Option("--id", "Идентификатор записи")
         }
         return options
 
@@ -36,6 +37,7 @@ class Controller:
 
         actions = {
             "add": Action("add", "Добавление записи", [self.options['title'], self.options['msg']], self.add),
+            "get": Action("get", "Получение записи", [self.options['id']], self.get),
             "help": Action("help", "Отображение текущей страницы помощи, также может быть вызвано опциями '-h/--help'",
                            [], self.show_help)
         }
@@ -55,6 +57,9 @@ class Controller:
         self.model = JsonModel
 
     def add(self, options: dict = None) -> None:
+        raise NotImplementedError
+
+    def get(self, options: dict = None) -> None:
         raise NotImplementedError
 
     def show_help(self, options: dict = None) -> None:
