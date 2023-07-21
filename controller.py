@@ -37,6 +37,7 @@ class Controller:
 
         actions = {
             "add": Action("add", "Добавление записи", [self.options['title'], self.options['msg']], self.add),
+            "delete": Action("delete", "Удаление записи", [self.options['id']], print),
             "get": Action("get", "Получение записи", [self.options['id']], self.get),
             "list": Action("list", "Получение списка записей", [], self.list),
             "help": Action("help", "Отображение текущей страницы помощи, также может быть вызвано опциями '-h/--help'",
@@ -59,6 +60,9 @@ class Controller:
 
     def add(self) -> None:
         self.model.add(title=self.parsed_options['--title'], msg=self.parsed_options['--msg'])
+
+    def delete(self) -> None:
+        raise NotImplementedError
 
     @staticmethod
     def __fancy_record_print(ident: int | str, record: dict) -> None:
