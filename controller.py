@@ -37,8 +37,10 @@ class Controller:
 
         actions = {
             "add": Action("add", "Добавление записи", [self.options['title'], self.options['msg']], self.add),
-            "delete": Action("delete", "Удаление записи", [self.options['id']], print),
+            "delete": Action("delete", "Удаление записи", [self.options['id']], self.delete),
             "get": Action("get", "Получение записи", [self.options['id']], self.get),
+            "edit": Action("edit", "Изменение записи", [self.options['id']], self.edit,
+                           [self.options['title'], self.options['msg']]),
             "list": Action("list", "Получение списка записей", [], self.list),
             "help": Action("help", "Отображение текущей страницы помощи, также может быть вызвано опциями '-h/--help'",
                            [], self.show_help)
@@ -62,6 +64,9 @@ class Controller:
         self.model.add(title=self.parsed_options['--title'], msg=self.parsed_options['--msg'])
 
     def delete(self) -> None:
+        raise NotImplementedError
+
+    def edit(self) -> None:
         raise NotImplementedError
 
     @staticmethod
