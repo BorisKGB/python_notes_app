@@ -105,8 +105,7 @@ class Controller:
         self.action = self.actions[action]
         self.argparse_success = True
         # get options from args
-        if len(args) > 1:
-            self.__parse_options(args[1:])
+        self.__parse_options(args[1:])
 
     def __parse_options(self, args: list) -> None:
         options_map = {val.name: val for key, val in self.options.items()}
