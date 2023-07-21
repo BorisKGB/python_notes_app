@@ -83,7 +83,12 @@ class Controller:
             print("No Data")
 
     def list(self, options: dict = None) -> None:
-        raise NotImplementedError
+        records = self.model.get_all()
+        if len(records) > 0:
+            for ident, record in records.items():
+                self.__fancy_record_print(ident, record)
+        else:
+            print("No Data")
 
     def show_help(self, options: dict = None) -> None:
         print(self.prog_info)
