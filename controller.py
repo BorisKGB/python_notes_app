@@ -26,12 +26,16 @@ class Action:
 class Controller:
     @staticmethod
     def __create_options() -> dict:
-        options = {}
+        options = {
+            "title": Option("--title", "Заголовок заметки"),
+            "msg": Option("--msg", "Сообщение заметки")
+        }
         return options
 
     def __create_actions(self) -> dict:
 
         actions = {
+            "add": Action("add", "Добавление записи", [self.options['title'], self.options['msg']], self.add),
             "help": Action("help", "Отображение текущей страницы помощи, также может быть вызвано опциями '-h/--help'",
                            [], self.show_help)
         }
@@ -49,6 +53,9 @@ class Controller:
         self.prog_info = "Приложение заметки (python) Консольная версия"
         self.prog_usage = "usage: %s ACTION [OPTIONS]" % self.prog_name
         self.model = JsonModel
+
+    def add(self, options: dict = None) -> None:
+        raise NotImplementedError
 
     def show_help(self, options: dict = None) -> None:
         print(self.prog_info)
