@@ -55,7 +55,7 @@ class Controller:
         self.parse_arguments(args[1:])
         self.prog_info = "Приложение заметки (python) Консольная версия"
         self.prog_usage = "usage: %s ACTION [OPTIONS]" % self.prog_name
-        self.model = JsonModel
+        self.model = JsonModel()
 
     def add(self, options: dict = None) -> None:
         raise NotImplementedError
