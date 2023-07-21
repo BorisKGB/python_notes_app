@@ -1,0 +1,16 @@
+# Примеры запуска ПО
+# Для запуска в windows среде потребуется явно указать интерпретатор, например "> python3 notes.py"
+
+$ ./notes.py
+$ ./notes.py add --title "asd" --msg "123"
+# частичное редактирование
+$ ./notes.py edit --id 1 --title "asd"
+# полное редактирование
+$ ./notes.py edit --id 1 --title "asd" --msg "123"
+$ ./notes.py get --id 1
+$ ./notes.py delete --id 0
+$ ./notes.py list
+# можно указать только часть фильтров, пример с указанием короткой даты
+$ ./notes.py list --filter-after '20-7-2023'
+# или с сортировкой в том числе
+$ ./notes.py list --filter-after '0:30:00_21-7-2023' --filter-before '0:40:00_21-7-2023' --sort
