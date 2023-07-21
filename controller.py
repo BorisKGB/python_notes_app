@@ -57,7 +57,7 @@ class Controller:
         self.prog_usage = "usage: %s ACTION [OPTIONS]" % self.prog_name
         self.model = JsonModel()
 
-    def add(self, options: dict = None) -> None:
+    def add(self) -> None:
         self.model.add(title=self.parsed_options['--title'], msg=self.parsed_options['--msg'])
 
     @staticmethod
@@ -71,7 +71,7 @@ class Controller:
         print("body: %s" % record['msg'])
         print("-" * 6)
 
-    def get(self, options: dict = None) -> None:
+    def get(self) -> None:
         # TODO: maybe convert options to correct type must be done on __parse_options side
         record = None
         ident = self.parsed_options['--id']
@@ -82,7 +82,7 @@ class Controller:
         else:
             print("No Data")
 
-    def list(self, options: dict = None) -> None:
+    def list(self) -> None:
         records = self.model.get_all()
         if len(records) > 0:
             for ident, record in records.items():
@@ -90,7 +90,7 @@ class Controller:
         else:
             print("No Data")
 
-    def show_help(self, options: dict = None) -> None:
+    def show_help(self) -> None:
         print(self.prog_info)
         print(self.prog_usage)
         print("Доступные действия: %s" % list(self.actions.keys()))
@@ -165,7 +165,7 @@ class Controller:
 
     def start(self) -> None:
         if self.argparse_success:
-            self.action.action(self.parsed_options)
+            self.action.action()
         else:
             if len(self.argparse_msg) > 0:
                 print(self.argparse_msg)
